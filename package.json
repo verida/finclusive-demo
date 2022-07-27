@@ -12,6 +12,8 @@
     "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
+    "@verida/account-web-vault": "^1.1.12",
+    "@verida/client-ts": "^1.1.15",
     "eslint": "^8.20.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react": "^1.1.7",
@@ -66,5 +68,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": "^14.0.0"
   }
 }
