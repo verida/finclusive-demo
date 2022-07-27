@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { CssBaseline } from "@mui/material";
+import { BrowserRouter as Router } from "react-router-dom";
 import { App } from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
@@ -9,7 +11,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <CssBaseline />
+    <Router>
+      <App />
+    </Router>
   </React.StrictMode>
 );
 
