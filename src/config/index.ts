@@ -1,5 +1,7 @@
 import { EnvironmentType } from "@verida/client-ts";
 
+const appTitle = "DEX";
+
 const nodeEnv = process.env.NODE_ENV || "development";
 
 const veridaEnv: EnvironmentType =
@@ -13,6 +15,7 @@ const veridaContextName = process.env.REACT_APP_VERIDA_APP_CONTEXT_NAME;
 const veridaLogoUrl = process.env.REACT_APP_VERIDA_APP_LOGO_URL;
 
 export const config = {
+  appTitle,
   nodeEnv,
   veridaEnv,
   veridaContextName,
