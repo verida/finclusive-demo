@@ -8,8 +8,18 @@ import {
   MenuItem,
 } from "@mui/material";
 import { KeyboardArrowDown as ArrowDownIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { routes } from "lib/constants";
+import { useVerida } from "lib/hooks";
 
 export const SwapBox: React.FunctionComponent = () => {
+  const navigate = useNavigate();
+  const { isConnected } = useVerida();
+
+  const handleConnectWalletClick = () => {
+    navigate(routes.profile);
+  };
+
   return (
     <Paper sx={{ width: "100%" }} elevation={8}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 2 }}>
@@ -76,9 +86,21 @@ export const SwapBox: React.FunctionComponent = () => {
               </MenuItem>
             </TextField>
           </Box>
-          <Button variant="contained" size="large" sx={{ width: "100%" }}>
-            Connect Wallet
-          </Button>
+          {!isConnected && (
+            <Button
+              variant="contained"
+              size="large"
+              sx={{ width: "100%" }}
+              onClick={handleConnectWalletClick}
+            >
+              Connect Wallet
+            </Button>
+          )}
+          {isConnected && (
+            <Button variant="contained" size="large" sx={{ width: "100%" }}>
+              Swap
+            </Button>
+          )}
         </Box>
       </Box>
     </Paper>
