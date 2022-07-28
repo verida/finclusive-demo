@@ -9,7 +9,12 @@ import {
 } from "@mui/material";
 import { KeyboardArrowDown as ArrowDownIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { routes } from "lib/constants";
+import {
+  routes,
+  swapAssets,
+  defaultGiveAsset,
+  defaultReceiveAsset,
+} from "lib/constants";
 import { useVerida } from "lib/hooks";
 
 export const SwapBox: React.FunctionComponent = () => {
@@ -31,7 +36,7 @@ export const SwapBox: React.FunctionComponent = () => {
         <Box component="form" noValidate autoComplete="off">
           <Box sx={{ display: "flex", gap: 1, mt: 2, mb: 1 }}>
             <TextField
-              label="Provide"
+              label="Give"
               variant="outlined"
               size="medium"
               defaultValue={0}
@@ -46,14 +51,13 @@ export const SwapBox: React.FunctionComponent = () => {
               select
               variant="outlined"
               size="medium"
-              defaultValue="USDC"
+              defaultValue={defaultGiveAsset}
             >
-              <MenuItem key="ETH" value="ETH">
-                ETH
-              </MenuItem>
-              <MenuItem key="USDC" value="USDC">
-                USDC
-              </MenuItem>
+              {swapAssets.map((asset) => (
+                <MenuItem key={asset} value={asset}>
+                  {asset}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "center", m: 0, p: 0 }}>
@@ -76,14 +80,13 @@ export const SwapBox: React.FunctionComponent = () => {
               select
               variant="outlined"
               size="medium"
-              defaultValue="ETH"
+              defaultValue={defaultReceiveAsset}
             >
-              <MenuItem key="ETH" value="ETH">
-                ETH
-              </MenuItem>
-              <MenuItem key="USDC" value="USDC">
-                USDC
-              </MenuItem>
+              {swapAssets.map((asset) => (
+                <MenuItem key={asset} value={asset}>
+                  {asset}
+                </MenuItem>
+              ))}
             </TextField>
           </Box>
           {!isConnected && (
