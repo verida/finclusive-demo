@@ -14,7 +14,15 @@ export const HomeView: React.FunctionComponent = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+        mt: 2,
+      }}
+    >
       {isConnected && !kycChecked && (
         <Alert
           severity="warning"
@@ -33,7 +41,10 @@ export const HomeView: React.FunctionComponent = () => {
         </Alert>
       )}
       <SwapBox />
-      <Typography variant="caption">For demo purpose only</Typography>
+      <Typography variant="caption">
+        This application is not functioning and meant for Verida demo purpose
+        only
+      </Typography>
     </Box>
   );
 };
