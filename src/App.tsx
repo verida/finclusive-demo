@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { useMatch, useNavigate } from "react-router-dom";
 import { routes } from "lib/constants";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { TopBar } from "components/organisms";
-import { ProfileDialog } from "components/views";
+import { HomeView, ProfileDialog } from "components/views";
 
 const TopBarOffset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -33,7 +33,11 @@ export const App: React.FunctionComponent = () => {
     >
       <TopBar />
       <TopBarOffset />
-      <Box component="main" sx={{ flexGrow: 1 }}></Box>
+      <Box component="main" sx={{ flexGrow: 1, pt: 2 }}>
+        <Container maxWidth="sm">
+          <HomeView />
+        </Container>
+      </Box>
       <ProfileDialog
         open={dialogOpen && !!profileRouteMatch}
         onClose={closeDialog}
