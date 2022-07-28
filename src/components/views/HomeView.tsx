@@ -27,6 +27,7 @@ export const HomeView: React.FunctionComponent = () => {
         <Alert
           severity="warning"
           variant="outlined"
+          sx={{ alignSelf: "stretch" }}
           action={
             <Button
               color="inherit"

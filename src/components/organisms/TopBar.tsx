@@ -1,7 +1,6 @@
 import React from "react";
 import {
   AppBar,
-  Avatar,
   Toolbar,
   Box,
   Button,
@@ -14,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { config } from "config";
 import { routes } from "lib/constants";
 import { useVerida } from "lib/hooks";
+import { AvatarWithID } from "components/atoms";
 
 export const TopBar: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -98,10 +98,10 @@ export const TopBar: React.FunctionComponent = () => {
               onClick={handleMenu}
               sx={{ p: 0 }}
             >
-              <Avatar
-                sx={{ width: { xs: 32, md: 40 }, height: { xs: 32, md: 40 } }}
-                alt={profile?.name}
-                src={profile?.avatar}
+              <AvatarWithID
+                id={profile?.id}
+                imageAlt={profile?.name}
+                imageSrc={profile?.avatar}
               />
             </IconButton>
           )}
