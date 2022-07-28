@@ -7,7 +7,7 @@ import { useVerida } from "lib/hooks";
 
 export const HomeView: React.FunctionComponent = () => {
   const navigate = useNavigate();
-  const { isConnected } = useVerida();
+  const { isConnected, kycChecked } = useVerida();
 
   const handleKYCAlertMoreClick = () => {
     navigate(routes.profile);
@@ -15,7 +15,7 @@ export const HomeView: React.FunctionComponent = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 2 }}>
-      {isConnected && (
+      {isConnected && !kycChecked && (
         <Alert
           severity="warning"
           action={
@@ -28,7 +28,7 @@ export const HomeView: React.FunctionComponent = () => {
             </Button>
           }
         >
-          Provide a KYC to unlock you swap volume.
+          Provide a KYC to unlock your swap volume.
         </Alert>
       )}
       <SwapBox />

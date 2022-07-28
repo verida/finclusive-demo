@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Box,
   Button,
   Typography,
-  useTheme,
   Link,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { EnvironmentType } from "@verida/client-ts";
 import { useVerida } from "lib/hooks";
@@ -14,9 +17,18 @@ import { ConnectVeridaButton } from "components/atoms";
 import { config } from "config";
 
 export const Profile: React.FunctionComponent = () => {
-  const { connect, disconnect, profile, isConnected, isConnecting } =
-    useVerida();
-  const theme = useTheme();
+  const {
+    connect,
+    disconnect,
+    sendKYCRequest,
+    resetKYC,
+    profile,
+    isConnected,
+    isConnecting,
+    waitingKYCRequest,
+    kycChecked,
+  } = useVerida();
+  const [kycDialogOpen, setKYCDialogOpen] = useState(false);
 
   const handleConnect = async () => {
     await connect();
@@ -24,6 +36,23 @@ export const Profile: React.FunctionComponent = () => {
 
   const handleDisconnect = async () => {
     await disconnect();
+  };
+
+  const handleProvideKYCClick = async () => {
+    setKYCDialogOpen(true);
+    await sendKYCRequest();
+  };
+
+  const closeKYCDialog = () => {
+    setKYCDialogOpen(false);
+  };
+
+  const handlePerformKYCClick = () => {
+    window.open("https://finclusive.com/", "_blank");
+  };
+
+  const handleResetKYCClick = () => {
+    resetKYC();
   };
 
   const salutation = (
@@ -34,7 +63,7 @@ export const Profile: React.FunctionComponent = () => {
 
   const connectedMessage = (
     <>
-      You are connected with your <strong>Verida</strong> account
+      You are connected with your <strong>Verida</strong> identity
     </>
   );
 
@@ -80,6 +109,26 @@ export const Profile: React.FunctionComponent = () => {
       </Alert>
     );
 
+  const veridaMissingKYCAlert = (
+    <Alert severity="warning" sx={{ alignSelf: "stretch" }}>
+      Provide a KYC to unlock you swap volume.
+    </Alert>
+  );
+
+  const veridaProvidedKYCAlert = (
+    <Alert
+      severity="success"
+      sx={{ alignSelf: "stretch" }}
+      action={
+        <Button color="inherit" size="small" onClick={handleResetKYCClick}>
+          Reset
+        </Button>
+      }
+    >
+      Your KYC allows you to swap with no limits
+    </Alert>
+  );
+
   return (
     <Box
       sx={{
@@ -88,7 +137,7 @@ export const Profile: React.FunctionComponent = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: theme.spacing(5),
+        gap: 4,
       }}
     >
       <Avatar
@@ -101,11 +150,57 @@ export const Profile: React.FunctionComponent = () => {
       </Typography>
       {isConnected ? (
         <>
+          {kycChecked ? (
+            <>{veridaProvidedKYCAlert}</>
+          ) : (
+            <>
+              {veridaMissingKYCAlert}
+              <Button
+                onClick={() => void handleProvideKYCClick()}
+                disabled={waitingKYCRequest}
+              >
+                {waitingKYCRequest ? `Waiting for KYC...` : `Provide KYC`}
+              </Button>
+              <Dialog open={kycDialogOpen} onClose={closeKYCDialog}>
+                <DialogTitle>KYC Request</DialogTitle>
+                <DialogContent>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                  >
+                    <Typography>
+                      A request has been sent to your{" "}
+                      <strong>Verida Vault</strong> to share a KYC credential.
+                    </Typography>
+                    <Typography>
+                      If you don't have a KYC credential, you can perform one
+                      with our partner FinClusive.
+                    </Typography>
+                  </Box>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handlePerformKYCClick}>Perform KYC</Button>
+                  <Button onClick={closeKYCDialog}>Close</Button>
+                </DialogActions>
+              </Dialog>
+            </>
+          )}
+
           <Box sx={{ alignSelf: "stretch" }}>
             <Typography>{connectedMessage}</Typography>
-            <Typography variant="body2">{profile?.id}</Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxWidth: "100%",
+              }}
+            >
+              {profile?.id}
+            </Typography>
           </Box>
-          {veridaEnvironmentAlert}
+
+          {/* {veridaEnvironmentAlert} */}
           <Button variant="contained" onClick={() => void handleDisconnect()}>
             {disconnectButtonLabel}
           </Button>
