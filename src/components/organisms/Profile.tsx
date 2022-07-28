@@ -48,7 +48,12 @@ export const Profile: React.FunctionComponent = () => {
   };
 
   const handlePerformKYCClick = () => {
-    window.open("https://finclusive.com/", "_blank");
+    const url =
+      config.finclusiveKYCFormURL && profile?.id
+        ? `${config.finclusiveKYCFormURL}?veridaDID=${encodeURI(profile?.id)}`
+        : "https://finclusive.com/";
+    window.open(url, "_blank");
+    setKYCDialogOpen(false);
   };
 
   const handleResetKYCClick = () => {
