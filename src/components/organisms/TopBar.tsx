@@ -64,7 +64,7 @@ export const TopBar: React.FunctionComponent = () => {
     <AppBar
       position="fixed"
       sx={{
-        backgroundColor: `background.default`,
+        backgroundColor: `transparent`,
         color: `text.primary`,
       }}
       elevation={0}

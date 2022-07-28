@@ -115,13 +115,14 @@ export const Profile: React.FunctionComponent = () => {
     );
 
   const veridaMissingKYCAlert = (
-    <Alert severity="warning" sx={{ alignSelf: "stretch" }}>
+    <Alert variant="outlined" severity="warning" sx={{ alignSelf: "stretch" }}>
       Provide a KYC to unlock you swap volume.
     </Alert>
   );
 
   const veridaProvidedKYCAlert = (
     <Alert
+      variant="outlined"
       severity="success"
       sx={{ alignSelf: "stretch" }}
       action={

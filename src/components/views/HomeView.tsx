@@ -18,6 +18,7 @@ export const HomeView: React.FunctionComponent = () => {
       {isConnected && !kycChecked && (
         <Alert
           severity="warning"
+          variant="outlined"
           action={
             <Button
               color="inherit"
