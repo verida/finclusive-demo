@@ -13,7 +13,8 @@ const veridaEnv: EnvironmentType =
 
 const veridaContextName = process.env.REACT_APP_VERIDA_APP_CONTEXT_NAME;
 const veridaLogoUrl = process.env.REACT_APP_VERIDA_APP_LOGO_URL;
-const finclusiveKYCFormURL = process.env.REACT_APP_FINCLUSIVE_KYC_WEBFORM_URL;
+const kycProviderFormURL = process.env.REACT_APP_KYC_PROVIDER_URL;
+const kycVCSchemaURL = process.env.REACT_APP_KYC_VC_SCHEMA_URL;
 
 export const config = {
   appTitle,
@@ -21,5 +22,6 @@ export const config = {
   veridaEnv,
   veridaContextName,
   veridaLogoUrl,
-  finclusiveKYCFormURL,
+  kycProviderFormURL,
+  kycVCSchemaURL,
 };

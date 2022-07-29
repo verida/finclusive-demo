@@ -91,7 +91,8 @@ export const VeridaProvider: React.FunctionComponent<VeridaProviderType> = (
   }, [account]);
 
   const sendKYCRequest = useCallback(async () => {
-    if (!context || !profile) {
+    if (!context || !profile || !config.kycVCSchemaURL) {
+      // TODO Handle these cases
       return;
     }
     console.debug("Preparing KYC request");
@@ -110,8 +111,7 @@ export const VeridaProvider: React.FunctionComponent<VeridaProviderType> = (
     const messageType = "inbox/type/dataRequest";
 
     const messageData = {
-      requestSchema:
-        "https://common.schemas.verida.io/identity/kyc/AU/v0.1.1/schema.json",
+      requestSchema: config.kycVCSchemaURL,
       filter: {},
       userSelect: true,
     };
