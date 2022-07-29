@@ -1,5 +1,6 @@
 {
-  "name": "defi-demo",
+  "name": "compliant-defi-demo",
+  "description": "Non functioning DeFi application to demonstrate Verifiable Credentials capabilities with KYC",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -57,6 +58,15 @@
     "workbox-streams": "^6.4.2"
   },
   "scripts": {
+    "clean:node_modules": "rm -rf node_modules/",
+    "clean:build": "rm -rf build/",
+    "clean": "npm run clean:build && npm run clean:node_modules",
+    "format:check": "npx prettier src/ --check",
+    "format": "npx prettier src/ --write",
+    "lint:check": "eslint src/ --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint src/ --fix --ext .js,.jsx,.ts,.tsx",
+    "check": "npm run format:check && npm run lint:check",
+    "fix": "npm run format && npm run lint",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
