@@ -59,8 +59,8 @@ export const VeridaProvider: React.FunctionComponent<VeridaProviderType> = (
       const [vContext, vAccount, vProfile] = await Verida.connect(
         config.veridaContextName,
         config.veridaEnv,
-        config.veridaLogoUrl,
-        window.location.href
+        config.veridaLogoUrl
+        // window.location.href
       );
       setContext(vContext);
       setAccount(vAccount);
