@@ -159,6 +159,7 @@ export const Profile: React.FunctionComponent = () => {
             <>
               {veridaMissingKYCAlert}
               <Button
+                variant="contained"
                 onClick={() => void handleProvideKYCClick()}
                 disabled={isWaitingKYCRequest}
               >
@@ -204,7 +205,7 @@ export const Profile: React.FunctionComponent = () => {
           </Box>
 
           {/* {veridaEnvironmentAlert} */}
-          <Button variant="contained" onClick={() => void handleDisconnect()}>
+          <Button onClick={() => void handleDisconnect()}>
             {disconnectButtonLabel}
           </Button>
         </>
