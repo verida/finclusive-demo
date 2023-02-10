@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useCallback, useState } from "react";
 import { config } from "config";
 import { useVerida } from "lib/hooks";

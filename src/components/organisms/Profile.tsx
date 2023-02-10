@@ -114,7 +114,7 @@ export const Profile: React.FunctionComponent = () => {
 
   const veridaMissingKYCAlert = (
     <Alert variant="outlined" severity="warning" sx={{ alignSelf: "stretch" }}>
-      Provide a KYC to unlock you swap volume.
+      Provide a KYC to unlock features.
     </Alert>
   );
 
@@ -129,15 +129,14 @@ export const Profile: React.FunctionComponent = () => {
         </Button>
       }
     >
-      Your KYC allows you to swap with no limits
+      Your KYC allows you additional features
     </Alert>
   );
 
   return (
     <Box
       sx={{
-        px: 3,
-        pb: 2,
+        p: 3,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -173,7 +172,7 @@ export const Profile: React.FunctionComponent = () => {
                   >
                     <Typography>
                       A request has been sent to your{" "}
-                      <strong>Verida Vault</strong> to share a KYC credential.
+                      <strong>Verida Wallet</strong> to share a KYC credential.
                     </Typography>
                     <Typography>
                       If you don't have a KYC credential, you can perform one

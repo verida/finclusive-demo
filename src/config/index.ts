@@ -1,6 +1,6 @@
 import { EnvironmentType } from "@verida/types";
 
-const appTitle = "Compliant DEX";
+const appTitle = "Compliant App";
 
 const nodeEnv = process.env.NODE_ENV || "development";
 
