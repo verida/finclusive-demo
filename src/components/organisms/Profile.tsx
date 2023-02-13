@@ -11,27 +11,25 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { EnvironmentType } from "@verida/client-ts";
-import { useVerida } from "lib/hooks";
+import { EnvironmentType } from "@verida/types";
+import { useKyc, useVerida } from "lib/hooks";
 import { ConnectVeridaButton } from "components/atoms";
 import { config } from "config";
 
 export const Profile: React.FunctionComponent = () => {
-  const {
-    connect,
-    disconnect,
-    sendKYCRequest,
-    resetKYC,
-    profile,
-    isConnected,
-    isConnecting,
-    waitingKYCRequest,
-    kycChecked,
-  } = useVerida();
+  const { connect, disconnect, profile, isConnected, did } = useVerida();
+  const { kycChecked, isWaitingKYCRequest, sendKYCRequest, resetKYC } =
+    useKyc();
+  const [isConnecting, setIsConnecting] = useState(false);
   const [kycDialogOpen, setKYCDialogOpen] = useState(false);
 
   const handleConnect = async () => {
-    await connect();
+    setIsConnecting(true);
+    try {
+      await connect();
+    } finally {
+      setIsConnecting(false);
+    }
   };
 
   const handleDisconnect = async () => {
@@ -49,8 +47,8 @@ export const Profile: React.FunctionComponent = () => {
 
   const handlePerformKYCClick = () => {
     const url =
-      config.kycProviderFormURL && profile?.id
-        ? `${config.kycProviderFormURL}?veridaDID=${encodeURI(profile?.id)}`
+      config.kycProviderFormURL && did
+        ? `${config.kycProviderFormURL}?veridaDID=${encodeURI(did)}`
         : "https://finclusive.com/";
     window.open(url, "_blank");
     setKYCDialogOpen(false);
@@ -116,7 +114,7 @@ export const Profile: React.FunctionComponent = () => {
 
   const veridaMissingKYCAlert = (
     <Alert variant="outlined" severity="warning" sx={{ alignSelf: "stretch" }}>
-      Provide a KYC to unlock you swap volume.
+      Provide a KYC to unlock features.
     </Alert>
   );
 
@@ -131,15 +129,14 @@ export const Profile: React.FunctionComponent = () => {
         </Button>
       }
     >
-      Your KYC allows you to swap with no limits
+      Your KYC allows you additional features
     </Alert>
   );
 
   return (
     <Box
       sx={{
-        px: 3,
-        pb: 2,
+        p: 3,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -148,7 +145,7 @@ export const Profile: React.FunctionComponent = () => {
     >
       <Avatar
         alt={profile?.name}
-        src={profile?.avatar}
+        src={profile?.avatarUri}
         sx={{ width: 128, height: 128 }}
       ></Avatar>
       <Typography component="h3" variant="h5">
@@ -162,10 +159,11 @@ export const Profile: React.FunctionComponent = () => {
             <>
               {veridaMissingKYCAlert}
               <Button
+                variant="contained"
                 onClick={() => void handleProvideKYCClick()}
-                disabled={waitingKYCRequest}
+                disabled={isWaitingKYCRequest}
               >
-                {waitingKYCRequest ? `Waiting for KYC...` : `Provide KYC`}
+                {isWaitingKYCRequest ? `Waiting for KYC...` : `Provide KYC`}
               </Button>
               <Dialog open={kycDialogOpen} onClose={closeKYCDialog}>
                 <DialogTitle>KYC Request</DialogTitle>
@@ -175,7 +173,7 @@ export const Profile: React.FunctionComponent = () => {
                   >
                     <Typography>
                       A request has been sent to your{" "}
-                      <strong>Verida Vault</strong> to share a KYC credential.
+                      <strong>Verida Wallet</strong> to share a KYC credential.
                     </Typography>
                     <Typography>
                       If you don't have a KYC credential, you can perform one
@@ -202,12 +200,12 @@ export const Profile: React.FunctionComponent = () => {
                 maxWidth: "100%",
               }}
             >
-              {profile?.id}
+              {did}
             </Typography>
           </Box>
 
           {/* {veridaEnvironmentAlert} */}
-          <Button variant="contained" onClick={() => void handleDisconnect()}>
+          <Button onClick={() => void handleDisconnect()}>
             {disconnectButtonLabel}
           </Button>
         </>
