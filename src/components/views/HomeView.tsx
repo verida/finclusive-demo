@@ -6,6 +6,7 @@ export const HomeView: React.FunctionComponent = () => {
   return (
     <Box
       sx={{
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -13,7 +14,7 @@ export const HomeView: React.FunctionComponent = () => {
         mt: 2,
       }}
     >
-      <Paper elevation={4}>
+      <Paper elevation={4} sx={{ width: "100%" }}>
         <Profile />
       </Paper>
     </Box>
