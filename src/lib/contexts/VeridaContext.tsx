@@ -16,6 +16,7 @@ const webUserInstance = new WebUser({
   accountConfig: {
     request: {
       logoUrl: config.veridaLogoUrl,
+      openUrl: window.location.href,
     },
   },
 });
