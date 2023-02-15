@@ -136,6 +136,7 @@ export const Profile: React.FunctionComponent = () => {
   return (
     <Box
       sx={{
+        width: "100%",
         p: 3,
         display: "flex",
         flexDirection: "column",
@@ -146,7 +147,7 @@ export const Profile: React.FunctionComponent = () => {
       <Avatar
         alt={profile?.name}
         src={profile?.avatarUri}
-        sx={{ width: 128, height: 128 }}
+        sx={{ width: 64, height: 64 }}
       ></Avatar>
       <Typography component="h3" variant="h5">
         {salutation}
