@@ -47,8 +47,10 @@ export const Profile: React.FunctionComponent = () => {
 
   const handlePerformKYCClick = () => {
     const url =
-      config.kycProviderFormURL && did
-        ? `${config.kycProviderFormURL}?veridaDID=${encodeURI(did)}`
+      config.kycProviderFormURL && config.finclusiveAccessCode && did
+        ? `${config.kycProviderFormURL}?accessCode=${
+            config.finclusiveAccessCode
+          }&veridaDID=${encodeURI(did)}`
         : "https://finclusive.com/";
     window.open(url, "_blank");
     setKYCDialogOpen(false);
