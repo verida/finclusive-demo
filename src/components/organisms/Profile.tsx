@@ -18,8 +18,7 @@ import { config } from "config";
 
 export const Profile: React.FunctionComponent = () => {
   const { connect, disconnect, profile, isConnected, did } = useVerida();
-  const { kycChecked, isWaitingKYCRequest, sendKYCRequest, resetKYC } =
-    useKyc();
+  const { kycValid, isWaitingKYCRequest, sendKYCRequest, resetKYC } = useKyc();
   const [isConnecting, setIsConnecting] = useState(false);
   const [kycDialogOpen, setKYCDialogOpen] = useState(false);
 
@@ -156,7 +155,7 @@ export const Profile: React.FunctionComponent = () => {
       </Typography>
       {isConnected ? (
         <>
-          {kycChecked ? (
+          {kycValid ? (
             <>{veridaProvidedKYCAlert}</>
           ) : (
             <>

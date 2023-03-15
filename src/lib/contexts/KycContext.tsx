@@ -1,17 +1,59 @@
 /* eslint-disable no-console */
 import React, { useCallback, useState } from "react";
+import { Credentials as CredentialClient } from "@verida/verifiable-credentials";
 import { config } from "config";
 import { useVerida } from "lib/hooks";
 
+type VerifiableCredential = {
+  didJwtVc: string;
+};
+
+type VerifiedCredential = {
+  verified: boolean;
+  verifiableCredential: {
+    credentialSchema: { id: string };
+    issuer: { id: string };
+  };
+};
+
+type Message<D> = {
+  data: {
+    data: D[];
+    replyId: string;
+  };
+};
+
+const credentialClient = new CredentialClient();
+
+async function verifyFinClusiveKycCredential(
+  didJwtVc: string
+): Promise<boolean> {
+  if (!config.finClusiveDid || !config.kycVCSchemaId) {
+    console.error("Missing information to verify the Verifiable Credential");
+    return false;
+  }
+
+  const decodedVc = (await credentialClient.verifyCredential(
+    didJwtVc
+  )) as VerifiedCredential;
+
+  return decodedVc
+    ? decodedVc.verified &&
+        decodedVc.verifiableCredential.issuer.id === config.finClusiveDid &&
+        decodedVc.verifiableCredential.credentialSchema.id ===
+          config.kycVCSchemaId
+    : false;
+}
+
 type KycContextType = {
-  kycChecked: boolean;
+  kycValid: boolean;
   isWaitingKYCRequest: boolean;
   sendKYCRequest: () => Promise<void>;
   resetKYC: () => void;
 };
 
 export const KycContext = React.createContext<KycContextType>({
-  kycChecked: false,
+  kycValid: false,
   isWaitingKYCRequest: false,
   sendKYCRequest: () => Promise.resolve(),
   resetKYC: () => {},
@@ -25,37 +67,48 @@ export const KycProvider: React.FunctionComponent<KycProviderProps> = (
   props
 ) => {
   const [isWaitingKYCRequest, setWaitingKYCRequest] = useState(false);
-  const [kycChecked, setKYCChecked] = useState(false);
+  const [kycValid, setKycValid] = useState(false);
 
   const { did, webUserInstanceRef } = useVerida();
 
   const sendKYCRequest = useCallback(async () => {
-    console.debug(`sendKYCRequest`);
     const context = await webUserInstanceRef.current.getContext();
-    if (!context || !did || !config.kycVCSchemaURL) {
-      // TODO Handle these cases
+    if (!context || !did || !config.vcSchemaURL) {
+      console.error("Missing information to sent the KYC request");
       return;
     }
-    console.debug("Preparing KYC request");
+
     setWaitingKYCRequest(true);
 
     const messaging = await context.getMessaging();
 
-    void messaging.onMessage((message: string) => {
-      console.debug("message received from Verida", message);
-      setWaitingKYCRequest(false);
-
-      // TODO: Verify KYC VC
-
-      setKYCChecked(true);
+    void messaging.onMessage(async (message: Message<VerifiableCredential>) => {
+      console.debug(message);
+      try {
+        if (message.data.data.length > 0) {
+          const vc = message.data.data[0];
+          const isValid = await verifyFinClusiveKycCredential(vc.didJwtVc);
+          setKycValid(isValid);
+        }
+      } catch (error: unknown) {
+        console.error(error);
+        setKycValid(false);
+      } finally {
+        setWaitingKYCRequest(false);
+      }
     });
 
     const message = "Please share a KYC credential";
     const messageType = "inbox/type/dataRequest";
 
     const messageData = {
-      requestSchema: config.kycVCSchemaURL,
-      filter: {},
+      requestSchema: config.vcSchemaURL, // Request a Credential stored in the Verida Network
+      filter: config.kycVCSchemaId
+        ? {
+            credentialSchema: config.kycVCSchemaId,
+            // Filter only Credentials with a certain schema, ie a KYC schema.
+          }
+        : {},
       userSelect: true,
     };
 
@@ -63,17 +116,16 @@ export const KycProvider: React.FunctionComponent<KycProviderProps> = (
       recipientContextName: "Verida: Vault",
       did,
     });
-    console.debug("KYC request sent");
-  }, [did, webUserInstanceRef]);
+  }, [webUserInstanceRef, did]);
 
   const resetKYC = useCallback(() => {
     setWaitingKYCRequest(false);
-    setKYCChecked(false);
+    setKycValid(false);
   }, []);
 
   const value: KycContextType = {
     isWaitingKYCRequest,
-    kycChecked,
+    kycValid,
     sendKYCRequest,
     resetKYC,
   };
