@@ -1,6 +1,6 @@
 {
   "name": "finclusive-demo",
-  "description": "Application to demonstrate Verifiable Credentials capabilities with KYC",
+  "description": "Application demonstrating Verifiable Credentials capabilities with KYC",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

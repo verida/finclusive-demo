@@ -1,12 +1,12 @@
-# Compliant DeFi demo
+# Verifiable Credential demo with FinClusive
 
-Demonstrating the use of KYC Verifiable Credentials in a DeFi context.
+Demonstrating the use of KYC Verifiable Credentials.
 
-This application is a demo and is **not meant to be used in production.** It is not functioning, not secure and does not implement best practices.
+This application is a demo and is **not meant to be used in production**.
 
 ## Introduction
 
-This repository provides the frontend of a DeFi application to be used as a demo illustrating how KYC Verifiable Credentials can be leveraged by applications, even DeFi applications.
+This repository provides the frontend of an application to be used as a demo illustrating how KYC Verifiable Credentials can be requested by applications.
 
 It allows the following:
 
@@ -74,4 +74,4 @@ Some tweaks were necessary to accomodate the lack of some polyfills in webpack 5
 
 ## License
 
-TBD
+ISC
