@@ -7,6 +7,8 @@ declare namespace NodeJS {
     REACT_APP_VERIDA_ENV?: "local" | "testnet" | "mainnet";
     REACT_APP_KYC_PROVIDER_URL?: string;
     REACT_APP_FINCLUSIVE_ACCESS_CODE?: string;
-    REACT_APP_KYC_VC_SCHEMA_URL?: string;
+    REACT_APP_VC_SCHEMA_URL?: string;
+    REACT_APP_FINCLUSIVE_DID?: string;
+    REACT_APP_KYC_VC_SCHEMA_ID?: string;
   }
 }
