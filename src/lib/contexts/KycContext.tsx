@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react";
 import { Credentials as CredentialClient } from "@verida/verifiable-credentials";
 import { config } from "config";
 import { useVerida } from "lib/hooks";
+import { getFinclusiveKycFormUrl } from "lib/utils";
 
 type VerifiableCredential = {
   didJwtVc: string;
@@ -109,6 +110,11 @@ export const KycProvider: React.FunctionComponent<KycProviderProps> = (
             // Filter only Credentials with a certain schema, ie a KYC schema.
           }
         : {},
+      fallbackAction: {
+        label: "Perform a KYC with FinClusive",
+        url: getFinclusiveKycFormUrl(did),
+      },
+      userSelectLimit: 1,
       userSelect: true,
     };
 
