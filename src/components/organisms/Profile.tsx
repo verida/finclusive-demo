@@ -15,6 +15,7 @@ import { EnvironmentType } from "@verida/types";
 import { useKyc, useVerida } from "lib/hooks";
 import { ConnectVeridaButton } from "components/atoms";
 import { config } from "config";
+import { getFinclusiveKycFormUrl } from "lib/utils";
 
 export const Profile: React.FunctionComponent = () => {
   const { connect, disconnect, profile, isConnected, did } = useVerida();
@@ -45,12 +46,7 @@ export const Profile: React.FunctionComponent = () => {
   };
 
   const handlePerformKYCClick = () => {
-    const url =
-      config.kycProviderFormURL && config.finclusiveAccessCode && did
-        ? `${config.kycProviderFormURL}?accessCode=${
-            config.finclusiveAccessCode
-          }&veridaDID=${encodeURI(did)}`
-        : "https://finclusive.com/";
+    const url = getFinclusiveKycFormUrl(did);
     window.open(url, "_blank");
     setKYCDialogOpen(false);
   };
